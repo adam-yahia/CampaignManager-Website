@@ -1,0 +1,322 @@
+/* Login Page Styles */
+
+.login-page {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-md);
+}
+
+.login-container {
+    width: 100%;
+    max-width: 400px;
+}
+
+.login-card {
+    background: white;
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-xl);
+    overflow: hidden;
+    animation: slideIn 0.5s ease-out;
+}
+
+.login-header {
+    background: linear-gradient(135deg, var(--primary-color) 0%, #1e40af 100%);
+    color: white;
+    text-align: center;
+    padding: var(--spacing-2xl) var(--spacing-lg) var(--spacing-xl);
+}
+
+.login-header i {
+    font-size: 3rem;
+    margin-bottom: var(--spacing-md);
+    opacity: 0.9;
+}
+
+.login-header h1 {
+    color: white;
+    margin-bottom: var(--spacing-xs);
+    font-size: 1.75rem;
+    font-weight: 700;
+}
+
+.login-subtitle {
+    opacity: 0.9;
+    font-size: 0.875rem;
+    margin-bottom: 0;
+}
+
+.auth-form {
+    padding: var(--spacing-2xl) var(--spacing-lg);
+    display: none;
+}
+
+.auth-form.active {
+    display: block;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.auth-form h2 {
+    margin-bottom: var(--spacing-xs);
+    color: var(--gray-900);
+    font-size: 1.5rem;
+}
+
+.form-subtitle {
+    color: var(--gray-500);
+    margin-bottom: var(--spacing-xl);
+    font-size: 0.875rem;
+}
+
+.auth-form .form-group {
+    margin-bottom: var(--spacing-lg);
+}
+
+.auth-form label {
+    font-weight: 600;
+    color: var(--gray-700);
+    margin-bottom: var(--spacing-sm);
+    font-size: 0.875rem;
+}
+
+.auth-form label i {
+    color: var(--gray-400);
+    width: 16px;
+}
+
+.auth-form input {
+    padding: var(--spacing-md);
+    font-size: 1rem;
+    border: 2px solid var(--gray-200);
+    transition: all var(--transition-normal);
+}
+
+.auth-form input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    transform: translateY(-1px);
+}
+
+.auth-form .btn {
+    width: 100%;
+    padding: var(--spacing-md);
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: var(--spacing-lg);
+    transition: all var(--transition-normal);
+}
+
+.auth-form .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.form-footer {
+    text-align: center;
+    padding-top: var(--spacing-md);
+    border-top: 1px solid var(--gray-100);
+}
+
+.form-footer p {
+    margin: 0;
+    color: var(--gray-600);
+    font-size: 0.875rem;
+}
+
+.form-footer a {
+    color: var(--primary-color);
+    font-weight: 600;
+    text-decoration: none;
+    transition: color var(--transition-fast);
+}
+
+.form-footer a:hover {
+    color: var(--primary-hover);
+    text-decoration: underline;
+}
+
+.message-container {
+    margin: 0 var(--spacing-lg) var(--spacing-lg);
+}
+
+.message-container .message {
+    margin-bottom: 0;
+    font-size: 0.875rem;
+    text-align: center;
+    border-radius: var(--radius-md);
+}
+
+/* Form Validation Styles */
+.form-group.error input {
+    border-color: var(--error-color);
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.form-group.success input {
+    border-color: var(--success-color);
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+.error-message {
+    color: var(--error-color);
+    font-size: 0.75rem;
+    margin-top: var(--spacing-xs);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+}
+
+.error-message i {
+    font-size: 0.75rem;
+}
+
+/* Loading State */
+.auth-form.loading {
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+.auth-form.loading .btn {
+    position: relative;
+    color: transparent;
+}
+
+.auth-form.loading .btn::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid transparent;
+    border-top: 2px solid white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+/* Password Strength Indicator */
+.password-strength {
+    margin-top: var(--spacing-xs);
+    height: 4px;
+    background-color: var(--gray-200);
+    border-radius: 2px;
+    overflow: hidden;
+    transition: all var(--transition-normal);
+}
+
+.password-strength-bar {
+    height: 100%;
+    border-radius: 2px;
+    transition: all var(--transition-normal);
+    width: 0%;
+}
+
+.password-strength.weak .password-strength-bar {
+    width: 33%;
+    background-color: var(--error-color);
+}
+
+.password-strength.medium .password-strength-bar {
+    width: 66%;
+    background-color: var(--warning-color);
+}
+
+.password-strength.strong .password-strength-bar {
+    width: 100%;
+    background-color: var(--success-color);
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+    .login-page {
+        padding: var(--spacing-sm);
+    }
+    
+    .login-header {
+        padding: var(--spacing-xl) var(--spacing-md);
+    }
+    
+    .login-header h1 {
+        font-size: 1.5rem;
+    }
+    
+    .auth-form {
+        padding: var(--spacing-xl) var(--spacing-md);
+    }
+    
+    .auth-form h2 {
+        font-size: 1.25rem;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .login-card {
+        background: var(--gray-800);
+        border: 1px solid var(--gray-700);
+    }
+    
+    .auth-form h2 {
+        color: white;
+    }
+    
+    .form-subtitle {
+        color: var(--gray-300);
+    }
+    
+    .auth-form label {
+        color: var(--gray-200);
+    }
+    
+    .auth-form input {
+        background-color: var(--gray-700);
+        border-color: var(--gray-600);
+        color: white;
+    }
+    
+    .auth-form input:focus {
+        background-color: var(--gray-600);
+    }
+    
+    .form-footer {
+        border-color: var(--gray-700);
+    }
+    
+    .form-footer p {
+        color: var(--gray-300);
+    }
+}
+
+/* Animation for form switching */
+.auth-form-enter {
+    animation: slideInRight 0.3s ease-out;
+}
+
+.auth-form-exit {
+    animation: slideOutLeft 0.3s ease-out;
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideOutLeft {
+    from {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+}

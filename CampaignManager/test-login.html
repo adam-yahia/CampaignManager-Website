@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Login - Campaign Manager</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .test-panel {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .status {
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            font-family: monospace;
+        }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+        .info { background: #d1ecf1; color: #0c5460; }
+    </style>
+</head>
+<body>
+    <h1>Test Login System</h1>
+    
+    <div class="test-panel">
+        <h2>Login Test</h2>
+        <form id="testLoginForm">
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" value="demo" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" value="demo123" required>
+            </div>
+            <button type="submit">Test Login</button>
+            <button type="button" onclick="checkCurrentUser()">Check Current User</button>
+            <button type="button" onclick="clearSession()">Clear Session</button>
+        </form>
+    </div>
+
+    <div class="test-panel">
+        <h2>Status</h2>
+        <div id="statusOutput" class="status info">Ready to test...</div>
+    </div>
+
+    <div class="test-panel">
+        <h2>Actions</h2>
+        <button onclick="goToDashboard()">Go to Dashboard</button>
+        <button onclick="recreateDemo()">Recreate Demo User</button>
+        <button onclick="testStorage()">Test Storage</button>
+    </div>
+
+    <script src="js/storage.js"></script>
+    <script>
+        function showStatus(message, type = 'info') {
+            const output = document.getElementById('statusOutput');
+            output.textContent = `${new Date().toLocaleTimeString()}: ${message}`;
+            output.className = `status ${type}`;
+            console.log(message);
+        }
+
+        function checkCurrentUser() {
+            try {
+                const user = Storage.getCurrentUser();
+                if (user) {
+                    showStatus(`Current user: ${user.username} (ID: ${user.id})`, 'success');
+                } else {
+                    showStatus('No current user found', 'error');
+                }
+            } catch (error) {
+                showStatus(`Error checking user: ${error.message}`, 'error');
+            }
+        }
+
+        function clearSession() {
+            try {
+                Storage.clearCurrentUser();
+                showStatus('Session cleared', 'info');
+            } catch (error) {
+                showStatus(`Error clearing session: ${error.message}`, 'error');
+            }
+        }
+
+        function recreateDemo() {
+            try {
+                Storage.clearAllData();
+                Storage.init();
+                showStatus('Demo user recreated', 'success');
+            } catch (error) {
+                showStatus(`Error recreating demo: ${error.message}`, 'error');
+            }
+        }
+
+        function testStorage() {
+            try {
+                // Test localStorage
+                localStorage.setItem('test', 'value');
+                const test = localStorage.getItem('test');
+                localStorage.removeItem('test');
+                
+                if (test === 'value') {
+                    showStatus('LocalStorage working correctly', 'success');
+                } else {
+                    showStatus('LocalStorage not working', 'error');
+                }
+            } catch (error) {
+                showStatus(`Storage error: ${error.message}`, 'error');
+            }
+        }
+
+        function goToDashboard() {
+            window.location.href = 'index.html';
+        }
+
+        // Handle login form
+        document.getElementById('testLoginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            try {
+                showStatus('Testing login...', 'info');
+                
+                // Validate credentials
+                const user = Storage.validateUser(username, password);
+                
+                if (user) {
+                    showStatus(`User validated: ${user.username}`, 'success');
+                    
+                    // Save user
+                    const saveResult = Storage.setCurrentUser(user);
+                    showStatus(`Save result: ${saveResult}`, saveResult ? 'success' : 'error');
+                    
+                    // Verify save
+                    const savedUser = Storage.getCurrentUser();
+                    if (savedUser && savedUser.id === user.id) {
+                        showStatus(`✅ Login successful! User: ${savedUser.username}`, 'success');
+                        
+                        // Option to redirect
+                        setTimeout(() => {
+                            if (confirm('Login successful! Go to dashboard?')) {
+                                window.location.href = 'index.html';
+                            }
+                        }, 1000);
+                    } else {
+                        showStatus('❌ User save verification failed', 'error');
+                    }
+                } else {
+                    showStatus('❌ Invalid credentials', 'error');
+                }
+            } catch (error) {
+                showStatus(`❌ Login error: ${error.message}`, 'error');
+            }
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            showStatus('Test page loaded', 'info');
+            checkCurrentUser();
+        });
+    </script>
+</body>
+</html>

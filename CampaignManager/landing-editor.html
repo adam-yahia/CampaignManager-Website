@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Landing Page Editor - Campaign Manager</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/editor.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="editor-page">
+    <!-- Header -->
+    <header class="editor-header">
+        <div class="header-content">
+            <div class="header-left">
+                <a href="index.html" class="back-btn">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to Dashboard
+                </a>
+                <h1>Landing Page Editor</h1>
+            </div>
+            <div class="header-right">
+                <button id="previewBtn" class="btn btn-outline">
+                    <i class="fas fa-eye"></i>
+                    Preview
+                </button>
+                <button id="saveLandingBtn" class="btn btn-primary">
+                    <i class="fas fa-save"></i>
+                    Save Page
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Editor Content -->
+    <main class="editor-main">
+        <div class="editor-container">
+            <!-- Controls Panel -->
+            <div class="controls-panel">
+                <div class="panel-section">
+                    <h3>Page Details</h3>
+                    <div class="form-group">
+                        <label for="landingName">Landing Page Name</label>
+                        <input type="text" id="landingName" placeholder="Enter page name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="pageTitle">Page Title</label>
+                        <input type="text" id="pageTitle" placeholder="Enter page title (for browser tab)">
+                    </div>
+                </div>
+
+                <div class="panel-section">
+                    <h3>Template Selection</h3>
+                    <div class="template-options">
+                        <label class="template-option">
+                            <input type="radio" name="landingTemplate" value="hero" checked>
+                            <div class="template-preview">
+                                <div class="template-thumb hero-thumb"></div>
+                                <span>Hero Section</span>
+                            </div>
+                        </label>
+                        <label class="template-option">
+                            <input type="radio" name="landingTemplate" value="features">
+                            <div class="template-preview">
+                                <div class="template-thumb features-thumb"></div>
+                                <span>Features Focus</span>
+                            </div>
+                        </label>
+                        <label class="template-option">
+                            <input type="radio" name="landingTemplate" value="minimal">
+                            <div class="template-preview">
+                                <div class="template-thumb minimal-thumb"></div>
+                                <span>Minimal Clean</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="panel-section">
+                    <h3>Content</h3>
+                    <div class="form-group">
+                        <label for="mainHeading">Main Heading</label>
+                        <input type="text" id="mainHeading" placeholder="Enter compelling headline">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="subHeading">Sub Heading</label>
+                        <input type="text" id="subHeading" placeholder="Supporting headline">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="pageContent">Main Content</label>
+                        <textarea id="pageContent" rows="5" placeholder="Describe your offer, product, or service..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="heroImage">Hero Image URL</label>
+                        <input type="url" id="heroImage" placeholder="https://example.com/hero-image.jpg">
+                        <small class="form-help">High-resolution image for visual impact</small>
+                    </div>
+                </div>
+
+                <div class="panel-section">
+                    <h3>Call-to-Action</h3>
+                    <div class="form-group">
+                        <label for="ctaHeading">CTA Heading</label>
+                        <input type="text" id="ctaHeading" placeholder="Ready to get started?">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ctaText">Button Text</label>
+                        <input type="text" id="ctaText" placeholder="Get Started Now">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ctaUrl">Button URL</label>
+                        <input type="url" id="ctaUrl" placeholder="https://example.com/signup">
+                    </div>
+                </div>
+
+                <div class="panel-section">
+                    <h3>Lead Collection Form</h3>
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="enableForm">
+                            <span class="checkmark"></span>
+                            Enable lead collection form
+                        </label>
+                    </div>
+
+                    <div id="formSettings" class="form-settings" style="display: none;">
+                        <div class="form-group">
+                            <label for="formHeading">Form Heading</label>
+                            <input type="text" id="formHeading" placeholder="Get Your Free Quote">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="formDescription">Form Description</label>
+                            <input type="text" id="formDescription" placeholder="Fill out the form below and we'll contact you">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="submitText">Submit Button Text</label>
+                            <input type="text" id="submitText" placeholder="Submit" value="Submit">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-section">
+                    <h3>Styling</h3>
+                    <div class="form-group">
+                        <label for="landingFont">Font Family</label>
+                        <select id="landingFont">
+                            <option value="'Inter', sans-serif">Inter (Modern & Clean)</option>
+                            <option value="'Poppins', sans-serif">Poppins (Friendly & Round)</option>
+                            <option value="'Roboto', sans-serif">Roboto (Professional)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="primaryColor">Primary Color</label>
+                            <input type="color" id="primaryColor" value="#2563eb">
+                        </div>
+                        <div class="form-group">
+                            <label for="accentColor">Accent Color</label>
+                            <input type="color" id="accentColor" value="#10b981">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="backgroundColor">Background Color</label>
+                        <input type="color" id="backgroundColor" value="#ffffff">
+                    </div>
+                </div>
+
+                <div class="panel-section">
+                    <h3>Actions</h3>
+                    <div class="action-buttons">
+                        <button id="resetLandingBtn" class="btn btn-outline">
+                            <i class="fas fa-undo"></i>
+                            Reset
+                        </button>
+                        <button id="duplicateLandingBtn" class="btn btn-outline">
+                            <i class="fas fa-copy"></i>
+                            Duplicate
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Preview Panel -->
+            <div class="preview-panel">
+                <div class="preview-header">
+                    <h3>Page Preview</h3>
+                    <div class="preview-actions">
+                        <button id="mobileViewBtn" class="btn btn-outline" title="Mobile View">
+                            <i class="fas fa-mobile-alt"></i>
+                        </button>
+                        <button id="tabletViewBtn" class="btn btn-outline" title="Tablet View">
+                            <i class="fas fa-tablet-alt"></i>
+                        </button>
+                        <button id="desktopViewBtn" class="btn btn-outline active" title="Desktop View">
+                            <i class="fas fa-desktop"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="preview-container landing-preview-container">
+                    <div id="landingPreview" class="landing-preview">
+                        <!-- Landing page content will be generated here -->
+                    </div>
+                </div>
+
+                <div class="preview-info">
+                    <p><strong>Responsive:</strong> Mobile, Tablet, Desktop</p>
+                    <p><strong>SEO Ready:</strong> Optimized structure</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Save Modal -->
+    <div id="saveModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Save Landing Page</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="saveStatus">Status</label>
+                    <select id="saveStatus">
+                        <option value="draft">Save as Draft</option>
+                        <option value="published">Publish Page</option>
+                    </select>
+                </div>
+                <p class="save-info">Your landing page will be saved to your campaigns.</p>
+            </div>
+            <div class="modal-footer">
+                <button id="cancelSaveBtn" class="btn btn-outline">Cancel</button>
+                <button id="confirmSaveBtn" class="btn btn-primary">Save Page</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/storage.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/landing-editor.js"></script>
+    <script>
+        // Initialize landing page editor on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check authentication
+            if (!Auth.isLoggedIn()) {
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            LandingEditor.init();
+        });
+    </script>
+</body>
+</html>

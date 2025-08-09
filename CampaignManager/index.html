@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campaign Manager - Dashboard</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="dashboard-page">
+    <!-- Header -->
+    <header class="main-header">
+        <div class="header-content">
+            <div class="header-left">
+                <i class="fas fa-bullhorn"></i>
+                <h1>Campaign Manager</h1>
+            </div>
+            <div class="header-right">
+                <span class="user-welcome">Welcome, <span id="currentUser">User</span></span>
+                <button id="logoutBtn" class="btn btn-outline">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Logout
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Dashboard Stats -->
+            <section class="dashboard-stats">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-image"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="bannerCount">0</h3>
+                        <p>Banners</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="emailCount">0</h3>
+                        <p>Email Campaigns</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-desktop"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="landingCount">0</h3>
+                        <p>Landing Pages</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Quick Actions -->
+            <section class="quick-actions">
+                <h2>Quick Actions</h2>
+                <div class="action-cards">
+                    <div class="action-card" data-action="banner">
+                        <div class="card-icon">
+                            <i class="fas fa-image"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3>Create New Banner</h3>
+                            <p>Design eye-catching banners with our easy-to-use editor</p>
+                            <span class="card-arrow">
+                                <i class="fas fa-arrow-right"></i>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="action-card" data-action="email">
+                        <div class="card-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3>Create Marketing Email</h3>
+                            <p>Build professional email campaigns that convert</p>
+                            <span class="card-arrow">
+                                <i class="fas fa-arrow-right"></i>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="action-card" data-action="landing">
+                        <div class="card-icon">
+                            <i class="fas fa-desktop"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3>Create Landing Page</h3>
+                            <p>Design high-converting landing pages with lead capture</p>
+                            <span class="card-arrow">
+                                <i class="fas fa-arrow-right"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Recent Campaigns -->
+            <section class="recent-campaigns">
+                <div class="section-header">
+                    <h2>Recent Campaigns</h2>
+                    <div class="campaign-filters">
+                        <select id="campaignFilter">
+                            <option value="all">All Types</option>
+                            <option value="banner">Banners</option>
+                            <option value="email">Email Campaigns</option>
+                            <option value="landing">Landing Pages</option>
+                        </select>
+                        <select id="statusFilter">
+                            <option value="all">All Status</option>
+                            <option value="draft">Draft</option>
+                            <option value="published">Published</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="campaigns-table-container">
+                    <table class="campaigns-table">
+                        <thead>
+                            <tr>
+                                <th>Campaign Name</th>
+                                <th>Type</th>
+                                <th>Last Modified</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="campaignsTableBody">
+                            <!-- Campaigns will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                    
+                    <div id="noCampaigns" class="no-campaigns" style="display: none;">
+                        <div class="no-campaigns-content">
+                            <i class="fas fa-folder-open"></i>
+                            <h3>No campaigns yet</h3>
+                            <p>Create your first campaign using the quick actions above</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="js/storage.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script>
+        // Initialize dashboard on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Dashboard page loaded, checking auth...');
+            
+            // Don't run automatic auth check from Auth module on dashboard
+            // Let Dashboard handle it more gracefully
+            setTimeout(() => {
+                Dashboard.init();
+            }, 100);
+        });
+    </script>
+</body>
+</html>

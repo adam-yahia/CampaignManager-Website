@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug - Campaign Manager</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .debug-panel {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .debug-info {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            margin: 10px 0;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Campaign Manager - Debug Panel</h1>
+    
+    <div class="debug-panel">
+        <h2>Authentication Status</h2>
+        <div id="authStatus" class="debug-info">Loading...</div>
+        
+        <h2>Current User</h2>
+        <div id="currentUser" class="debug-info">Loading...</div>
+        
+        <h2>LocalStorage Contents</h2>
+        <div id="storageContents" class="debug-info">Loading...</div>
+        
+        <h2>Page Information</h2>
+        <div id="pageInfo" class="debug-info">Loading...</div>
+    </div>
+    
+    <div class="debug-panel">
+        <h2>Actions</h2>
+        <button onclick="refreshDebugInfo()">Refresh Info</button>
+        <button onclick="clearStorage()">Clear All Storage</button>
+        <button onclick="createDemoUser()">Create Demo User</button>
+        <button onclick="loginDemoUser()">Login Demo User</button>
+        <button onclick="logoutUser()">Logout</button>
+        <button onclick="goToLogin()">Go to Login</button>
+        <button onclick="goToDashboard()">Go to Dashboard</button>
+        <button onclick="testLocalStorage()">Test LocalStorage</button>
+        <button onclick="forceLogin()">Force Login & Redirect</button>
+    </div>
+    
+    <div class="debug-panel">
+        <h2>Console Output</h2>
+        <div id="consoleOutput" class="debug-info" style="height: 200px; overflow-y: auto;"></div>
+        <button onclick="clearConsole()">Clear Console</button>
+    </div>
+
+    <script src="js/storage.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        // Override console.log to capture output
+        const originalLog = console.log;
+        const consoleOutput = document.getElementById('consoleOutput');
+        
+        console.log = function(...args) {
+            originalLog.apply(console, args);
+            const logEntry = args.join(' ');
+            consoleOutput.innerHTML += `<div>${new Date().toLocaleTimeString()}: ${logEntry}</div>`;
+            consoleOutput.scrollTop = consoleOutput.scrollHeight;
+        };
+
+        function refreshDebugInfo() {
+            try {
+                // Auth Status
+                const isLoggedIn = Auth.isLoggedIn();
+                document.getElementById('authStatus').innerHTML = `
+                    <strong>Logged In:</strong> ${isLoggedIn}<br>
+                    <strong>Auth Module:</strong> ${typeof Auth}<br>
+                    <strong>Storage Module:</strong> ${typeof Storage}
+                `;
+
+                // Current User
+                const currentUser = Storage.getCurrentUser();
+                document.getElementById('currentUser').innerHTML = `
+                    <strong>User Data:</strong> ${currentUser ? JSON.stringify(currentUser, null, 2) : 'null'}
+                `;
+
+                // Storage Contents
+                const users = Storage.getUsers();
+                const campaigns = Storage.getCampaigns();
+                document.getElementById('storageContents').innerHTML = `
+                    <strong>Users:</strong> ${users.length} users<br>
+                    <strong>Campaigns:</strong> ${campaigns.length} campaigns<br>
+                    <strong>Users Data:</strong> ${JSON.stringify(users, null, 2)}<br>
+                    <strong>Current User Key:</strong> ${localStorage.getItem('campaignManager_currentUser')}
+                `;
+
+                // Page Info
+                document.getElementById('pageInfo').innerHTML = `
+                    <strong>Current URL:</strong> ${window.location.href}<br>
+                    <strong>Pathname:</strong> ${window.location.pathname}<br>
+                    <strong>Search:</strong> ${window.location.search}<br>
+                    <strong>User Agent:</strong> ${navigator.userAgent}
+                `;
+
+                console.log('Debug info refreshed');
+            } catch (error) {
+                console.error('Error refreshing debug info:', error);
+                document.getElementById('authStatus').innerHTML = `<div class="error">Error: ${error.message}</div>`;
+            }
+        }
+
+        function clearStorage() {
+            if (confirm('Are you sure you want to clear all storage?')) {
+                localStorage.clear();
+                console.log('Storage cleared');
+                refreshDebugInfo();
+            }
+        }
+
+        function createDemoUser() {
+            try {
+                Storage.clearAllData();
+                Storage.init();
+                console.log('Demo user created');
+                refreshDebugInfo();
+            } catch (error) {
+                console.error('Error creating demo user:', error);
+            }
+        }
+
+        function loginDemoUser() {
+            try {
+                const user = Storage.validateUser('demo', 'demo123');
+                if (user) {
+                    Storage.setCurrentUser(user);
+                    console.log('Demo user logged in');
+                    refreshDebugInfo();
+                } else {
+                    console.error('Demo user not found');
+                }
+            } catch (error) {
+                console.error('Error logging in demo user:', error);
+            }
+        }
+
+        function logoutUser() {
+            try {
+                Storage.clearCurrentUser();
+                console.log('User logged out');
+                refreshDebugInfo();
+            } catch (error) {
+                console.error('Error logging out:', error);
+            }
+        }
+
+        function goToLogin() {
+            window.location.href = 'login.html';
+        }
+
+        function goToDashboard() {
+            window.location.href = 'index.html';
+        }
+
+        function clearConsole() {
+            consoleOutput.innerHTML = '';
+        }
+
+        function testLocalStorage() {
+            try {
+                // Test basic localStorage functionality
+                localStorage.setItem('test_key', 'test_value');
+                const testValue = localStorage.getItem('test_key');
+                console.log('LocalStorage test result:', testValue);
+                
+                if (testValue === 'test_value') {
+                    console.log('✅ LocalStorage is working correctly');
+                } else {
+                    console.log('❌ LocalStorage read/write failed');
+                }
+                
+                localStorage.removeItem('test_key');
+                
+                // Test JSON storage
+                const testObj = { name: 'test', id: 123 };
+                localStorage.setItem('test_json', JSON.stringify(testObj));
+                const parsedObj = JSON.parse(localStorage.getItem('test_json'));
+                console.log('JSON test:', parsedObj);
+                localStorage.removeItem('test_json');
+                
+            } catch (error) {
+                console.error('LocalStorage test failed:', error);
+            }
+        }
+
+        function forceLogin() {
+            try {
+                // Force create demo user and login
+                createDemoUser();
+                const user = Storage.validateUser('demo', 'demo123');
+                if (user) {
+                    Storage.setCurrentUser(user);
+                    console.log('Force login successful, redirecting...');
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 1000);
+                } else {
+                    console.error('Force login failed - user not found');
+                }
+            } catch (error) {
+                console.error('Force login error:', error);
+            }
+        }
+
+        // Initialize debug info
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Debug page loaded');
+            refreshDebugInfo();
+        });
+
+        // Don't run normal auth checks on debug page
+        if (typeof Auth !== 'undefined') {
+            Auth.checkAuthStatus = function() {
+                console.log('Auth check disabled on debug page');
+            };
+        }
+    </script>
+</body>
+</html>

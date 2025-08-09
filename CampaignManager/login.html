@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campaign Manager - Login</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/login.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="login-page">
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <i class="fas fa-bullhorn"></i>
+                <h1>Campaign Manager</h1>
+                <p class="login-subtitle">Manage your marketing campaigns with ease</p>
+            </div>
+
+            <!-- Login Form -->
+            <form id="loginForm" class="auth-form active">
+                <h2>Welcome Back</h2>
+                <p class="form-subtitle">Sign in to your account</p>
+                
+                <div class="form-group">
+                    <label for="loginUsername">
+                        <i class="fas fa-user"></i>
+                        Username
+                    </label>
+                    <input type="text" id="loginUsername" name="username" required autocomplete="username">
+                </div>
+
+                <div class="form-group">
+                    <label for="loginPassword">
+                        <i class="fas fa-lock"></i>
+                        Password
+                    </label>
+                    <input type="password" id="loginPassword" name="password" required autocomplete="current-password">
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Sign In
+                </button>
+
+                <div class="form-footer">
+                    <p>Don't have an account? <a href="#" id="showSignup">Create one</a></p>
+                </div>
+            </form>
+
+            <!-- Signup Form -->
+            <form id="signupForm" class="auth-form">
+                <h2>Create Account</h2>
+                <p class="form-subtitle">Join Campaign Manager today</p>
+                
+                <div class="form-group">
+                    <label for="signupUsername">
+                        <i class="fas fa-user"></i>
+                        Username
+                    </label>
+                    <input type="text" id="signupUsername" name="username" required autocomplete="username">
+                    <small class="form-help">Choose a unique username</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="signupPassword">
+                        <i class="fas fa-lock"></i>
+                        Password
+                    </label>
+                    <input type="password" id="signupPassword" name="password" required autocomplete="new-password">
+                    <small class="form-help">Minimum 6 characters</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">
+                        <i class="fas fa-lock"></i>
+                        Confirm Password
+                    </label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" required autocomplete="new-password">
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-user-plus"></i>
+                    Create Account
+                </button>
+
+                <div class="form-footer">
+                    <p>Already have an account? <a href="#" id="showLogin">Sign in</a></p>
+                </div>
+            </form>
+
+            <!-- Error/Success Messages -->
+            <div id="messageContainer" class="message-container"></div>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/storage.js"></script>
+    <script>
+        // Initialize authentication system on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Clear any redirect flags from URL
+            if (window.location.search.includes('redirecting')) {
+                const url = new URL(window.location);
+                url.searchParams.delete('redirecting');
+                window.history.replaceState({}, '', url);
+            }
+            
+            Auth.init();
+        });
+    </script>
+</body>
+</html>

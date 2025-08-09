@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banner Editor - Campaign Manager</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/editor.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="editor-page">
+    <!-- Header -->
+    <header class="editor-header">
+        <div class="header-content">
+            <div class="header-left">
+                <a href="index.html" class="back-btn">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to Dashboard
+                </a>
+                <h1>Banner Editor</h1>
+            </div>
+            <div class="header-right">
+                <button id="previewBtn" class="btn btn-outline">
+                    <i class="fas fa-eye"></i>
+                    Preview
+                </button>
+                <button id="saveBannerBtn" class="btn btn-primary">
+                    <i class="fas fa-save"></i>
+                    Save Banner
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Editor Content -->
+    <main class="editor-main">
+        <div class="editor-container">
+            <!-- Controls Panel -->
+            <div class="controls-panel">
+                <div class="panel-section">
+                    <h3>Campaign Details</h3>
+                    <div class="form-group">
+                        <label for="bannerName">Banner Name</label>
+                        <input type="text" id="bannerName" placeholder="Enter banner name" required>
+                    </div>
+                </div>
+
+                <div class="panel-section">
+                    <h3>Banner Size</h3>
+                    <div class="size-options">
+                        <label class="size-option">
+                            <input type="radio" name="bannerSize" value="250x250" checked>
+                            <span class="size-label">
+                                <strong>Square</strong>
+                                <small>250 × 250px</small>
+                            </span>
+                        </label>
+                        <label class="size-option">
+                            <input type="radio" name="bannerSize" value="300x600">
+                            <span class="size-label">
+                                <strong>Vertical</strong>
+                                <small>300 × 600px</small>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="panel-section">
+                    <h3>Text Content</h3>
+                    <div class="form-group">
+                        <label for="bannerText">Banner Text</label>
+                        <textarea id="bannerText" rows="3" placeholder="Enter your banner text"></textarea>
+                    </div>
+                </div>
+
+                <div class="panel-section">
+                    <h3>Text Styling</h3>
+                    <div class="form-group">
+                        <label for="fontFamily">Font Family</label>
+                        <select id="fontFamily">
+                            <option value="Arial, sans-serif">Arial (Clean & Modern)</option>
+                            <option value="Georgia, serif">Georgia (Classic & Elegant)</option>
+                            <option value="'Courier New', monospace">Courier New (Bold & Tech)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="fontSize">Font Size</label>
+                            <input type="range" id="fontSize" min="12" max="48" value="24">
+                            <span id="fontSizeValue">24px</span>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="textColor">Text Color</label>
+                            <input type="color" id="textColor" value="#000000">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-section">
+                    <h3>Background</h3>
+                    <div class="form-group">
+                        <label for="backgroundColor">Background Color</label>
+                        <input type="color" id="backgroundColor" value="#ffffff">
+                    </div>
+                </div>
+
+                <div class="panel-section">
+                    <h3>Actions</h3>
+                    <div class="action-buttons">
+                        <button id="resetBannerBtn" class="btn btn-outline">
+                            <i class="fas fa-undo"></i>
+                            Reset
+                        </button>
+                        <button id="duplicateBannerBtn" class="btn btn-outline">
+                            <i class="fas fa-copy"></i>
+                            Duplicate
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Preview Panel -->
+            <div class="preview-panel">
+                <div class="preview-header">
+                    <h3>Live Preview</h3>
+                    <div class="preview-actions">
+                        <button id="downloadBtn" class="btn btn-outline" title="Download as Image">
+                            <i class="fas fa-download"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="preview-container">
+                    <div id="bannerPreview" class="banner-preview">
+                        <div id="bannerCanvas" class="banner-canvas">
+                            <span id="previewText">Your banner text will appear here</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="preview-info">
+                    <p><strong>Current Size:</strong> <span id="currentSize">250 × 250px</span></p>
+                    <p><strong>File Format:</strong> Web-optimized</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Save Modal -->
+    <div id="saveModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Save Banner</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="saveStatus">Status</label>
+                    <select id="saveStatus">
+                        <option value="draft">Save as Draft</option>
+                        <option value="published">Publish Banner</option>
+                    </select>
+                </div>
+                <p class="save-info">Your banner will be saved to your campaigns.</p>
+            </div>
+            <div class="modal-footer">
+                <button id="cancelSaveBtn" class="btn btn-outline">Cancel</button>
+                <button id="confirmSaveBtn" class="btn btn-primary">Save Banner</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/storage.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/banner-editor.js"></script>
+    <script>
+        // Initialize banner editor on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check authentication
+            if (!Auth.isLoggedIn()) {
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            BannerEditor.init();
+        });
+    </script>
+</body>
+</html>
